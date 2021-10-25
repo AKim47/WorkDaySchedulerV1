@@ -11,6 +11,7 @@ var createTable = function(taskTime, taskText, id) {
         .text(taskTime);
     var cm2 = $("<p>")
         .addClass("m-1")
+        .attr('id', id)
         .addClass("col-8 border")
         .text(taskText);
     var cm3 = $("<button>")
@@ -59,8 +60,7 @@ var loadDate = function(){
 };
 
 var taskGen = function(times){
-    console.log(times.length);
-    tasks = JSON.parse(localStorage.getItem("text"));
+    tasks = JSON.parse(localStorage.getItem("tasks"));
 
     var table = $("<table>")
         .addClass("table");
@@ -74,7 +74,7 @@ var taskGen = function(times){
     }
 
     for (let i = 0; i < times.length; i++) {
-        createTable(times[i], tasks["text"][i], i);
+        createTable(times[i], tasks.text[i], i);
     }
 
 
@@ -84,16 +84,35 @@ $(".container").on("click", "p", function(){
     var content = $(this)
         .text()
         .trim();
+
+    var idSelect = $(this).attr("id");
     
     var contentInput = $("<textarea>")
         .addClass("form-control")
         .addClass("m-1")
+        .attr('id', idSelect)
         .addClass("col-8 border")
         .val(content);
     
     $(this).replaceWith(contentInput);
     contentInput.trigger("focus");
 });
+
+$(".container").on("click", "button", function(){
+    var status = $(this)
+        .closest(".row")
+        .attr("id");
+    
+    if ($("textarea[id=" + status +"]").length){
+        var textVal = $("textarea[id=" + status +"]")
+            .val()
+            .trim();
+        
+        tasks["text"][status] = textVal;
+        saveTasks();
+    }
+
+})
 
 var saveTasks = function() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
