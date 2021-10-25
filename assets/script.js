@@ -5,16 +5,19 @@ var createTable = function(taskTime, taskText) {
     // create elements for a row of the scheduler
     var taskRow = $("<div>").addClass("row");
     var cm1 = $("<span>")
+        .addClass("col border")
         .text(taskTime);
     var cm2 = $("<p>")
         .addClass("m-1")
+        .addClass("col-8 border")
         .text(taskText);
-    
+    var cm3 = $("<button>")
+        .addClass("col btn btn-primary border");
     // append cm1 and cm2 to taskRow
-    taskRow.append(cm1, cm2);
+    taskRow.append(cm1, cm2, cm3);
 
     // append to container on page
-    $(".container").append(taskRow);
+    $(".table").append(taskRow);
 }
 /* current date */
 var loadDate = function(){
@@ -26,6 +29,10 @@ var loadDate = function(){
 var taskGen = function(times){
     console.log(times.length);
     tasks = JSON.parse(localStorage.getItem("text"));
+
+    var table = $("<table>")
+        .addClass("table");
+    $(".container").append(table);
     
     // if there is nothing in the localStorage, create new text object
     if (!tasks) {
