@@ -1,9 +1,11 @@
 var times = ["9:00 am", "10:00 am", "11:00 am", "12:00 pm", "1:00 pm", "2:00 pm", "3:00 pm", "4:00 pm", "5:00 pm"];
 var tasks = {};
 
-var createTable = function(taskTime, taskText) {
+var createTable = function(taskTime, taskText, id) {
     // create elements for a row of the scheduler
-    var taskRow = $("<div>").addClass("row");
+    var taskRow = $("<div>")
+        .addClass("row")
+        .attr('id', id);
     var cm1 = $("<span>")
         .addClass("col border")
         .text(taskTime);
@@ -67,20 +69,36 @@ var taskGen = function(times){
     // if there is nothing in the localStorage, create new text object
     if (!tasks) {
         tasks = {
-            text: ["testing", "", "", "", "", "", "", "", ""]
+            text: ["", "", "", "", "", "", "", "", ""]
         };
     }
 
     for (let i = 0; i < times.length; i++) {
-        createTable(times[i], tasks["text"][i]);
+        createTable(times[i], tasks["text"][i], i);
     }
 
 
 };
 
+$(".container").on("click", "p", function(){
+    var content = $(this)
+        .text()
+        .trim();
+    
+    var contentInput = $("<textarea>")
+        .addClass("form-control")
+        .addClass("m-1")
+        .addClass("col-8 border")
+        .val(content);
+    
+    $(this).replaceWith(contentInput);
+    contentInput.trigger("focus");
+});
+
 var saveTasks = function() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
+
 
 
 loadDate();
